@@ -1,50 +1,53 @@
+class Pokemon
+  attr_accessor :name, :attack, :defense
+  def initialize(name, attack, defense)
+    @name = name
+    @attack = attack
+    @defense = defense
+  end
+
+end
+
 class Pokedex
   def initialize
-    # Lista para guardar pokemones
-    @pl = []
+    @pokemon_list = []
   end
 
-  # Agrega nombre, ataque y defensa de un pokémon a la lista
-  def add_pokemon(n, a, d)
-    @pl << [n, a, d]
+  def add_pokemon(name, attack, defense)
+    @pokemon_list << Pokemon.new(name, attack, defense)
   end
 
-  # Para aumentar el ataque de un pokémon
-  def increase_attack(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[1] += 1
-        f = true
+  def find_pokemon(name)
+    for pokemon in @pokemon_list
+      if pokemon.name == name
+        return pokemon
       end
     end
-    if !f
-      puts n + " no encontrado"
+    return nil
+  end
+
+  def increase_attack(name)
+    pokemon = find_pokemon(name)
+    if pokemon.nil?
+      puts name + " no encontrado"
+    else
+      pokemon.attack += 1
     end
   end
 
-  # Para aumentar la defensa de un pokémon
-  def increase_defense(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[2] += 1
-        f = true
-      end
-    end
-    if !f
-      puts n + " no encontrado"
+  def increase_defense(name)
+    pokemon = find_pokemon(name)
+    if pokemon.nil?
+      puts name + " no encontrado"
+    else
+      pokemon.defense += 1
     end
   end
 
-  # Para obtener los atributos de un pokémon
-  def get_stats(n)
-    for pk in @pl
-      if pk[0] == n
-        puts pk[1].to_s + "/" + pk[2].to_s
-      end
+  def get_stats(name)
+    pokemon = find_pokemon(name)
+    if !pokemon.nil?
+        puts pokemon.attack.to_s + "/" + pokemon.defense.to_s
     end
   end
 
@@ -52,9 +55,9 @@ class Pokedex
   def to_s
     i = 0
     temp = ""
-    for pk in @pl
+    for pk in @pokemon_list
       i += 1
-      temp += i.to_s + ". " + pk[0] + "\n"
+      temp += i.to_s + ". " + pk.name.to_s + "\n"
     end
     temp
   end
