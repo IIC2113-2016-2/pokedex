@@ -1,3 +1,25 @@
+class Pokemon
+  attr_reader :nombre, :ataque, :defensa
+  def initialize(nombre, ataque, defensa)
+    @nombre = nombre
+    @ataque = ataque
+    @defensa = defensa
+  end
+
+  def increase_atk(number=1)
+    @ataque += number
+  end
+
+  def increase_def(number=1)
+    @defensa += number
+  end
+
+  def get_stats()
+    "#{@ataque} / #{@defensa}"
+  end
+
+end
+
 class Pokedex
   def initialize
     # Lista para guardar pokemones
@@ -5,48 +27,20 @@ class Pokedex
   end
 
   # Agrega nombre, ataque y defensa de un pokémon a la lista
-  def add_pokemon(n, a, d)
-    @pl << [n, a, d]
+  def add_pokemon(poke)
+    @pl << poke
   end
 
-  # Para aumentar el ataque de un pokémon
-  def increase_attack(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[1] += 1
-        f = true
-      end
-    end
-    if !f
-      puts n + " no encontrado"
-    end
-  end
-
-  # Para aumentar la defensa de un pokémon
-  def increase_defense(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[2] += 1
-        f = true
-      end
-    end
-    if !f
-      puts n + " no encontrado"
-    end
-  end
-
-  # Para obtener los atributos de un pokémon
-  def get_stats(n)
-    for pk in @pl
-      if pk[0] == n
-        puts pk[1].to_s + "/" + pk[2].to_s
+  def find_pokemon(_name)
+    @pl.each do |pk|
+      if pk.nombre == _name
+        return pk
+      else
+        puts _name + " no encontrado"
       end
     end
   end
+
 
   # Se llama al invocar puts sobre una instancia
   def to_s
@@ -54,15 +48,17 @@ class Pokedex
     temp = ""
     for pk in @pl
       i += 1
-      temp += i.to_s + ". " + pk[0] + "\n"
+      temp += i.to_s + ". " + pk.nombre + "\n"
     end
     temp
   end
 end
 
 pokedex = Pokedex.new
-pokedex.add_pokemon('Pikachu', 12, 10)
-pokedex.add_pokemon('Cubone', 8, 12)
-pokedex.increase_attack('Pikachu')
-pokedex.get_stats('Pikachu')
+pikachu = Pokemon.new('Pikachu', 12 , 10)
+cubone = Pokemon.new('Cubone', 8, 12)
+pokedex.add_pokemon(pikachu)
+pokedex.add_pokemon(cubone)
+pokedex.find_pokemon("Pikachu").increase_atk(1)
+puts pokedex.find_pokemon('Pikachu').get_stats()
 puts pokedex
