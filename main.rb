@@ -1,6 +1,8 @@
 require_relative 'pokemon'
 
 class Pokedex
+
+  attr_accessor :pokemon_list
   def initialize
     # Lista para guardar pokemones
     @pokemon_list = []
