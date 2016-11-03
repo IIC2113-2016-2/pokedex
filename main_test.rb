@@ -25,8 +25,13 @@ class TestMain < Minitest::Test
     assert_equal @pokemon.defense, 9
   end
 
-  def test_get_stats
-    assert_output("8/8\n") {@pokemon.get_stats}
+  def test_get_stats_existing_pokemon
+    @pokedex.add_pokemon('pika', 8, 8 )
+    assert_output("8/8\n") {@pokedex.get_stats('pika')}
+  end
+
+  def get_stats_excluded_pokemon
+    assert_output("pokemon not found\n") {@pokedex.get_stats('pika')}
   end
 
 end

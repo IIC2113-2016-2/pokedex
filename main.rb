@@ -15,8 +15,13 @@ class Pokedex
   end
 
   def get_stats(name)
-    selected_pokemons = @pokemon_list.detect { |pokemon| pokemon.name ==  name }
-    selected_pokemons.get_stats
+    pokemon = @pokemon_list.detect { |pokemon| pokemon.name ==  name }
+    if pokemon != nil
+      pokemon.get_stats
+    else
+      puts 'pokemon not found'
+    end
+    
   end
 
   # Se llama al invocar puts sobre una instancia
@@ -30,6 +35,8 @@ end
 
 
 pokedex = Pokedex.new
+pokedex.print
+pokedex.get_stats('hola')
 pokedex.add_pokemon('Pikachu', 12, 10)
 pokedex.add_pokemon('Cubone', 8, 12)
 pokedex.get_stats('Pikachu')
