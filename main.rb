@@ -1,62 +1,129 @@
-class Pokedex
+require 'minitest/autorun'
+
+class Pokemon < Minitest::Test
+  attr_accessor :attack
+  attr_accessor :defense
+  attr_accessor :name
+
+  def initialize(name, attack, defense)
+    @attack = attack
+    @name = name
+    @defense = defense
+  end
+
+  def increase_attack
+    @attack += 1
+  end
+
+  def increase_defense
+    @defense += 1
+  end
+
+  def stats
+    puts @attack.to_s + '/' + @defense.to_s
+  end
+end
+
+class Pokedex < Minitest::Test
+  attr_accessor :pl
+
   def initialize
-    # Lista para guardar pokemones
     @pl = []
   end
 
-  # Agrega nombre, ataque y defensa de un pokémon a la lista
-  def add_pokemon(n, a, d)
-    @pl << [n, a, d]
+  def add_pokemon(name, attack, defense)
+    @pl << Pokemon.new(name, attack, defense)
   end
 
-  # Para aumentar el ataque de un pokémon
-  def increase_attack(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[1] += 1
-        f = true
-      end
+  def find_pokemon(name)
+    @pl.each do |pk|
+      return pk if pk.name == name
     end
-    if !f
-      puts n + " no encontrado"
-    end
+    nil
   end
 
-  # Para aumentar la defensa de un pokémon
-  def increase_defense(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[2] += 1
-        f = true
-      end
-    end
-    if !f
-      puts n + " no encontrado"
+  def increase_attack(name)
+    pk = find_pokemon(name)
+    if pk
+      pk.increase_attack
+    else
+      puts name + ' no encontrado'
     end
   end
 
-  # Para obtener los atributos de un pokémon
-  def get_stats(n)
-    for pk in @pl
-      if pk[0] == n
-        puts pk[1].to_s + "/" + pk[2].to_s
-      end
+  def increase_defense(name)
+    pk = find_pokemon(name)
+    if pk
+      pk.increase_defense
+    else
+      puts name + ' no encontrado'
+    end
+  end
+
+  def get_stats(name)
+    pk = find_pokemon(name)
+    if pk
+      pk.stats
+    else
+      puts name + ' no encontrado'
     end
   end
 
   # Se llama al invocar puts sobre una instancia
   def to_s
     i = 0
-    temp = ""
-    for pk in @pl
+    temp = ''
+    @pl.each do |pk|
       i += 1
-      temp += i.to_s + ". " + pk[0] + "\n"
+      temp += i.to_s + '. ' + pk.name + "\n"
     end
     temp
+  end
+end
+
+class Test < Minitest::Test
+  def test_find_pokemon
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    pdex.add_pokemon('squirtle', 1, 1)
+    found_pk = pdex.find_pokemon('charmander')
+    assert_equal found_pk.name, 'charmander'
+  end
+
+  def test_pokemon
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    assert_instance_of Pokemon, pdex.pl[0]
+  end
+
+  def test_inc_attack
+    pokemon = Pokemon.new('charmander', 1, 1)
+    pokemon.increase_attack
+    assert_equal pokemon.attack, 2
+  end
+
+  def test_inc_defense
+    pokemon = Pokemon.new('charmander', 1, 1)
+    pokemon.increase_defense
+    assert_equal pokemon.defense, 2
+  end
+
+  def test_inc_pokemon_atk
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    pdex.add_pokemon('squirtle', 1, 1)
+    pdex.increase_attack('charmander')
+    found_pk = pdex.find_pokemon('charmander')
+    assert_equal found_pk.attack, 2
+  end
+
+  def test_inc_pokemon_def
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    pdex.add_pokemon('squirtle', 1, 1)
+    pdex.increase_defense('charmander')
+    found_pk = pdex.find_pokemon('charmander')
+    assert_equal found_pk.defense, 2
   end
 end
 
