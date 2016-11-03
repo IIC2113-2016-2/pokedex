@@ -1,6 +1,10 @@
 require 'minitest/autorun'
 
 class Pokemon < Minitest::Test
+  attr_accessor :attack
+  attr_accessor :defense
+  attr_accessor :name
+
   def initialize(name, attack, defense)
     @attack = attack
     @name = name
@@ -15,16 +19,14 @@ class Pokemon < Minitest::Test
     @defense += 1
   end
 
-  def get_name
-    @name
-  end
-
   def stats
     puts @attack.to_s + '/' + @defense.to_s
   end
 end
 
-class Pokedexn < Minitest::Test
+class Pokedex < Minitest::Test
+  attr_accessor :pl
+
   def initialize
     @pl = []
   end
@@ -35,7 +37,7 @@ class Pokedexn < Minitest::Test
 
   def find_pokemon(name)
     @pl.each do |pk|
-      return pk if pk.get_name == name
+      return pk if pk.name == name
     end
     nil
   end
@@ -73,9 +75,55 @@ class Pokedexn < Minitest::Test
     temp = ''
     @pl.each do |pk|
       i += 1
-      temp += i.to_s + '. ' + pk.get_name + "\n"
+      temp += i.to_s + '. ' + pk.name + "\n"
     end
     temp
+  end
+end
+
+class Test < Minitest::Test
+  def test_find_pokemon
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    pdex.add_pokemon('squirtle', 1, 1)
+    found_pk = pdex.find_pokemon('charmander')
+    assert_equal found_pk.name, 'charmander'
+  end
+
+  def test_pokemon
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    assert_instance_of Pokemon, pdex.pl[0]
+  end
+
+  def test_inc_attack
+    pokemon = Pokemon.new('charmander', 1, 1)
+    pokemon.increase_attack
+    assert_equal pokemon.attack, 2
+  end
+
+  def test_inc_defense
+    pokemon = Pokemon.new('charmander', 1, 1)
+    pokemon.increase_defense
+    assert_equal pokemon.defense, 2
+  end
+
+  def test_inc_pokemon_atk
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    pdex.add_pokemon('squirtle', 1, 1)
+    pdex.increase_attack('charmander')
+    found_pk = pdex.find_pokemon('charmander')
+    assert_equal found_pk.attack, 2
+  end
+
+  def test_inc_pokemon_def
+    pdex = Pokedex.new
+    pdex.add_pokemon('charmander', 1, 1)
+    pdex.add_pokemon('squirtle', 1, 1)
+    pdex.increase_defense('charmander')
+    found_pk = pdex.find_pokemon('charmander')
+    assert_equal found_pk.defense, 2
   end
 end
 
