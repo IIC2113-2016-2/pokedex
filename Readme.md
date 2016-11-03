@@ -29,9 +29,13 @@
 
 1.- ControlParameter:
   - Los parametros no son facil de leer ya que los nombres no son claros
+
 2.- FeatureEnvy:
   - refers to 'pk' more than self (maybe move it to another class?)
+
 3.- RepeatedConditional:
   - Que se repiten codigo por lo menso 3 veces
-4.- UncommunicativeParameterName:
+
+4.- UncommunicativeParameterName
+
 5.- UncommunicativeVariableName
