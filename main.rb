@@ -27,7 +27,8 @@ class Pokedex
   # Se llama al invocar puts sobre una instancia
   def print
     @pokemon_list.each_with_index do |pokemon, index|
-      puts index.to_s + ". " + pokemon.name
+      count = index + 1
+      puts count.to_s + ". " + pokemon.name
     end
   end
 

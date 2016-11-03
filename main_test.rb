@@ -30,8 +30,14 @@ class TestMain < Minitest::Test
     assert_output("8/8\n") {@pokedex.get_stats('pika')}
   end
 
-  def get_stats_excluded_pokemon
+  def test_get_stats_excluded_pokemon
     assert_output("pokemon not found\n") {@pokedex.get_stats('pika')}
+  end
+
+  def test_print_pokedex
+    @pokedex.add_pokemon('Pika', 8, 8)
+    @pokedex.add_pokemon('Cubone', 8, 12)
+    assert_output("1. Pika\n2. Cubone\n") {@pokedex.print}
   end
 
 end
