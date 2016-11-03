@@ -1,60 +1,79 @@
-class Pokedex
+require 'minitest/autorun'
+
+class Pokemon < Minitest::Test
+  def initialize(name, attack, defense)
+    @attack = attack
+    @name = name
+    @defense = defense
+  end
+
+  def increase_attack
+    @attack += 1
+  end
+
+  def increase_defense
+    @defense += 1
+  end
+
+  def get_name
+    @name
+  end
+
+  def stats
+    puts @attack.to_s + '/' + @defense.to_s
+  end
+end
+
+class Pokedexn < Minitest::Test
   def initialize
-    # Lista para guardar pokemones
     @pl = []
   end
 
-  # Agrega nombre, ataque y defensa de un pokémon a la lista
-  def add_pokemon(n, a, d)
-    @pl << [n, a, d]
+  def add_pokemon(name, attack, defense)
+    @pl << Pokemon.new(name, attack, defense)
   end
 
-  # Para aumentar el ataque de un pokémon
-  def increase_attack(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[1] += 1
-        f = true
-      end
+  def find_pokemon(name)
+    @pl.each do |pk|
+      return pk if pk.get_name == name
     end
-    if !f
-      puts n + " no encontrado"
-    end
+    nil
   end
 
-  # Para aumentar la defensa de un pokémon
-  def increase_defense(n)
-    # Guarda si el pokémon fue encontrado
-    f = false
-    for pk in @pl
-      if pk[0] == n
-        pk[2] += 1
-        f = true
-      end
-    end
-    if !f
-      puts n + " no encontrado"
+  def increase_attack(name)
+    pk = find_pokemon(name)
+    if pk
+      pk.increase_attack
+    else
+      puts name + ' no encontrado'
     end
   end
 
-  # Para obtener los atributos de un pokémon
-  def get_stats(n)
-    for pk in @pl
-      if pk[0] == n
-        puts pk[1].to_s + "/" + pk[2].to_s
-      end
+  def increase_defense(name)
+    pk = find_pokemon(name)
+    if pk
+      pk.increase_defense
+    else
+      puts name + ' no encontrado'
+    end
+  end
+
+  def get_stats(name)
+    pk = find_pokemon(name)
+    if pk
+      pk.stats
+    else
+      puts name + ' no encontrado'
     end
   end
 
   # Se llama al invocar puts sobre una instancia
   def to_s
     i = 0
-    temp = ""
-    for pk in @pl
+    temp = ''
+    @pl.each do |pk|
       i += 1
-      temp += i.to_s + ". " + pk[0] + "\n"
+      temp += i.to_s + '. ' + pk.get_name + "\n"
     end
     temp
   end
