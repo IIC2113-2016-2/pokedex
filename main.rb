@@ -13,12 +13,12 @@ class Pokedex
   end
 
   def get_stats(name)
-    selected_pokemons = @pokemon_list.select { |pokemon| pokemon.name ==  name }
-    selected_pokemons.first.get_stats
+    selected_pokemons = @pokemon_list.detect { |pokemon| pokemon.name ==  name }
+    selected_pokemons.get_stats
   end
 
   # Se llama al invocar puts sobre una instancia
-  def to_s
+  def print
     @pokemon_list.each_with_index do |pokemon, index|
       puts index.to_s + ". " + pokemon.name
     end
@@ -31,4 +31,4 @@ pokedex = Pokedex.new
 pokedex.add_pokemon('Pikachu', 12, 10)
 pokedex.add_pokemon('Cubone', 8, 12)
 pokedex.get_stats('Pikachu')
-puts pokedex
+pokedex.print
