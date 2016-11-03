@@ -9,6 +9,7 @@ class Pokemon
 end
 
 class Pokedex
+  attr_accessor :pokemon_list
   def initialize
     @pokemon_list = []
   end
@@ -48,6 +49,7 @@ class Pokedex
     pokemon = find_pokemon(name)
     if !pokemon.nil?
         puts pokemon.attack.to_s + "/" + pokemon.defense.to_s
+        pokemon.attack.to_s + "/" + pokemon.defense.to_s
     end
   end
 
